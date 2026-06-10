@@ -1,0 +1,10 @@
+.page_header {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing3) var(--spacing5);
+    height: 1.5rem;
+}
+.header-title {
+    font-family: 'Axiforma', sans-serif;
+    color: var(--text-h);
+}

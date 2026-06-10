@@ -1,0 +1,10 @@
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+}
+.content-body {
+    position: relative;
+    flex: 1;
+}
