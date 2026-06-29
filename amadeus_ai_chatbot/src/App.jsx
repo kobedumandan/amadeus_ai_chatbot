@@ -10,11 +10,9 @@ function App() {
 
   return (
     <div className="app-body">
-      <SideBar title={'#'}/>
+      <SideBar title={"#"} />
 
-      <ContentPane
-        header={<PageHeader title={"amadeus"}></PageHeader>}
-      >
+      <ContentPane header={<PageHeader title={"amadeus"}></PageHeader>}>
         <InputBar />
       </ContentPane>
     </div>

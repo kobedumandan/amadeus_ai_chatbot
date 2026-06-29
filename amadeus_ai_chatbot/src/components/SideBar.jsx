@@ -32,13 +32,15 @@ export default function SideBar({ title, user }) {
       <div className="sidebar-links">
         <ul>
           {SIDEBAR_LINKS.map((links, index) => (
-            <li key={index}>
-              {links.icon}
-              <a href="#">{links.label}</a>
-            </li>
+            <a href="#">
+              <li key={index}>
+                {links.icon}
+                {links.label}
+              </li>
+            </a>
           ))}
         </ul>
-      </div>
+      </div>  
       <div className="recents-wrapper">
         <ul>
           {RECENT_CHATS.map((chats, index) => (
