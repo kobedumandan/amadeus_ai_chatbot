@@ -5,16 +5,33 @@
     transform: translate(-50%, 0);
     display: flex;
     justify-content: center;
-    padding: 0 var(--spacing4);
+    border-radius: var(--border-r5);
+    border: .8px solid var(--input-border);
+    background-color: var(--input-bg);
+    padding: var(--spacing1) var(--spacing2);
 }
 .search_input {
-    background-color: var(--input-bg);
-    padding: var(--spacing3) var(--spacing5);
-    border-radius: var(--border-r2);
-    border: .8px solid var(--input-border);
+    background-color: transparent;
+    padding: var(--spacing2) var(--spacing3);
+    border: transparent;
     font-size: var(--fs-base);
 }
 .search_input:focus {
     border-color: var(--input-border-focused);
     outline: none;
+}
+.input-bar-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    height: 2.25rem;;
+    width: 2.25rem;
+    background-color: rgb(121, 0, 196);
+    border: transparent;
+    cursor: pointer;
+}
+.input_btn {
+    color: white;
+    transform: scale(0.9);
 }

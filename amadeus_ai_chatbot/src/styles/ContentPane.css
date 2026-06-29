@@ -11,6 +11,10 @@
   min-height: 100vh;
 }
 .content-body {
+  padding: var(--spacing1) 16rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing1);
   position: relative;
   flex: 1;
 }
@@ -40,17 +44,40 @@
 }
 
 .header-more {
-    padding: var(--spacing2) var(--spacing2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing1);
-    font-size: var(--fs-small);
-    border-radius: var(--border-r1);
-    border: transparent;
-    background: transparent;
-  }
-  .header-more:hover {
-    background-color: var(--hover);
-    cursor: pointer;
-  }
+  padding: var(--spacing2) var(--spacing2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing1);
+  font-size: var(--fs-small);
+  border-radius: var(--border-r1);
+  border: transparent;
+  background: transparent;
+}
+.header-more:hover {
+  background-color: var(--hover);
+  cursor: pointer;
+}
+
+/* Chat Streaming */
+.message_row {
+  display: flex;
+}
+.message_row.sender {
+  justify-content: end;
+}
+.message_row.reciever {
+  justify-content: start;
+}
+
+.chat_messages {
+  background-color: transparent;
+  color: white;
+  padding: var(--spacing3) var(--spacing5);
+  border-radius: var(--border-r3);
+  max-width: fit-content;
+  font-size: var(--fs-small);
+}
+.sender .chat_messages {
+  background-color: var(--accent-bg);
+}

@@ -76,3 +76,17 @@ export function Share({ className }) {
     </svg>
   );
 }
+
+// Input Bar 
+export function SendInput({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M440-240v-368L296-464l-56-56 240-240 240 240-56 56-144-144v368h-80Z"/>
+    </svg>
+  );
+}
