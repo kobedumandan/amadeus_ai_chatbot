@@ -30,8 +30,18 @@
     background-color: rgb(121, 0, 196);
     border: transparent;
     cursor: pointer;
+    transition: 0.04s ease-in-out;
+
+    .input_btn {
+        color: white;
+        transform: scale(0.9);
+    }
 }
-.input_btn {
-    color: white;
-    transform: scale(0.9);
+.input-bar-btn:active {
+    .input_btn {
+        color: rgb(121, 0, 196);;
+    }
+
+    transform: scale(1.05);
+    background-color: rgb(212, 205, 0);
 }
