@@ -73,10 +73,11 @@
 .chat_messages {
   background-color: transparent;
   color: white;
-  padding: var(--spacing3) var(--spacing5);
+  padding: var(--spacing2) var(--spacing5);
   border-radius: var(--border-r3);
   max-width: fit-content;
   font-size: var(--fs-small);
+  line-height: 1.5;
 }
 .sender .chat_messages {
   background-color: var(--accent-bg);
