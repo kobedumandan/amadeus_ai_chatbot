@@ -2,27 +2,25 @@ import "../styles/InputBar.css";
 import { SendInput } from "../assets/svg/svg.jsx";
 
 export default function InputBar({ setMessages }) {
+
   async function SendMessage() {
     const msg = document.getElementById("search-bar-input");
+    const userMsg = msg.value;
+
     setMessages((prev) => [
       ...prev,
       {
         role: "sender",
-        message: msg.value,
+        message: userMsg,
       },
     ]);
-
-    const userMsg = msg.value;
 
     clearInputBar();
 
     const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization:
-          `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
-        // "HTTP-Referer": "<YOUR_SITE_URL>", // Optional. Site URL for rankings on openrouter.ai.
-        // "X-OpenRouter-Title": "<YOUR_SITE_NAME>", // Optional. Site title for rankings on openrouter.ai.
+        Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -33,30 +31,73 @@ export default function InputBar({ setMessages }) {
             content: userMsg,
           },
         ],
+        stream: true,
+        max_tokens: 512,
       }),
-      max_tokens: 256,
     });
 
     if (!resp.ok) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "system",
-          message: data.error.message,
-        },
-      ]);
-      return;
+      throw new Error(`HTTP Error: ${resp.status}`);
     }
 
-    const data = await resp.json();
+    // const data = await resp.json();
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "receiver",
-        message: data.choices[0].message.content,
-      },
-    ]);
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder("utf-8");
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+
+      const lines = chunk.split("\n");
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed === "data: [DONE]") continue;
+
+        if (trimmed.startsWith("data: ")) {
+          try {
+            const jsonStr = trimmed.replace("data: ", "");
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content;
+
+            if (content) {
+              setMessages((prev) => {
+                const lastMessage = prev[prev.length - 1];
+
+                if (lastMessage && lastMessage.role === "receiver") {
+                  return [
+                    ...prev.slice(0, -1),
+                    {
+                      ...lastMessage,
+                      message: lastMessage.message + content,
+                    },
+                  ];
+                }
+
+                return [
+                  ...prev,
+                  {
+                    role: "receiver",
+                    message: content,
+                  },
+                ];
+              });
+            }
+          } catch (error) {
+            // setMessages((prev) => {
+            //   return [...prev, {
+            //     role: "error",
+            //     message: error.message,
+            //   }];
+            // });
+            console.log(error.message);
+          }
+        }
+      }
+    }
   }
 
   function clearInputBar() {
@@ -70,7 +111,6 @@ export default function InputBar({ setMessages }) {
         id="search-bar-input"
         className="search_input"
         type="text"
-        size={65}
         placeholder="Ask me Anything!"
       />
       <button className="input-bar-btn" onClick={SendMessage}>

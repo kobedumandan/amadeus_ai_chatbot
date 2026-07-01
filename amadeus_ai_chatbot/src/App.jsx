@@ -7,15 +7,17 @@ import "./App.css";
 
 function App() {
   const [messages, setMessages] = useState([
-    { role: "sender", message: "Hello amadeus!" },
-    { role: "reciever", message: "Hello kobe!" },
-  ])
+    { role: "receiver", message: "Hello!" },
+  ]);
 
   return (
     <div className="app-body">
       <SideBar title={"@"} />
 
-      <ContentPane header={<PageHeader title={"amadeus"}></PageHeader>}>
+      <ContentPane
+        header={<PageHeader title={"amadeus"}></PageHeader>}
+        inputBar={<InputBar setMessages={setMessages} />}
+      >
         {messages.map((msg, index) => (
           <div className={`message_row ${msg.role}`}>
             <div className="chat_messages" key={index}>
@@ -23,7 +25,6 @@ function App() {
             </div>
           </div>
         ))}
-        <InputBar setMessages={setMessages}/>
       </ContentPane>
     </div>
   );

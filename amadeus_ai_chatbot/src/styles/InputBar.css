@@ -1,16 +1,16 @@
-.searchbar_wrapper {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translate(-50%, 0);
+.searchbar_wrapper { 
+    width: 100%;
     display: flex;
     justify-content: center;
-    border-radius: var(--border-r5);
+    align-items: center;
+    padding: var(--spacing1) var(--spacing2);
+    border-radius: var(--border-r3);
     border: .8px solid var(--input-border);
     background-color: var(--input-bg);
-    padding: var(--spacing1) var(--spacing2);
+    transform: translateY(-1rem);
 }
 .search_input {
+    flex: 1;
     background-color: transparent;
     padding: var(--spacing2) var(--spacing3);
     border: transparent;
