@@ -10,9 +10,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 function App() {
-  const [messages, setMessages] = useState([
-    { role: "receiver", message: "Hello!" },
-  ]);
+  const [messages, setMessages] = useState([]);
 
   return (
     <div className="app-body">
@@ -20,12 +18,12 @@ function App() {
 
       <ContentPane
         header={<PageHeader title={"amadeus"}></PageHeader>}
-        inputBar={<InputBar setMessages={setMessages} />}
+        inputBar={<InputBar messages={messages} setMessages={setMessages} />}
       >
         {messages.map((msg, index) => (
           <div className={`message_row ${msg.role}`}>
             <div className="chat_messages" key={index}>
-              {msg.role === "receiver" ? (
+              {msg.role === "chatbot" ? (
                 <Markdown
                   components={{
                     // This isolates and styles the code blocks properly

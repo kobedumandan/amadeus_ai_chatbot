@@ -1,30 +1,35 @@
 import "../styles/InputBar.css";
-import { SendInput } from "../assets/svg/svg.jsx";
+import { SendInput, NewChat as AddItem } from "../assets/svg/svg.jsx";
 import { useState } from "react";
 
-export default function InputBar({ setMessages }) {
-
+export default function InputBar({ messages, setMessages }) {
   // streaming flag
   const [isStreaming, setStreaming] = useState(false);
 
   async function SendMessage() {
-
-    console.log("pressed")
+    console.log("pressed");
 
     setStreaming(true);
 
-    const msg = document.getElementById("search-bar-input");
-    const userMsg = msg.value.trim();
+    const editableDiv = document.getElementById("search-bar-input");
+    const msg = editableDiv.innerText;
+    const userMsg = msg.trim();
 
     setMessages((prev) => [
       ...prev,
       {
-        role: "sender",
+        role: "user",
         message: userMsg,
       },
     ]);
 
     clearInputBar();
+
+    let context = "CURRENT CONTEXT: ";
+    for (const message of messages) {
+      context +=  `\n ${message.role}: ${message.message}`;
+    }
+    console.log(context);
 
     const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -37,7 +42,7 @@ export default function InputBar({ setMessages }) {
         messages: [
           {
             role: "user",
-            content: userMsg,
+            content: `${context} \n ${userMsg}`,
           },
         ],
         stream: true,
@@ -75,7 +80,7 @@ export default function InputBar({ setMessages }) {
               setMessages((prev) => {
                 const lastMessage = prev[prev.length - 1];
 
-                if (lastMessage && lastMessage.role === "receiver") {
+                if (lastMessage && lastMessage.role === "chatbot") {
                   return [
                     ...prev.slice(0, -1),
                     {
@@ -88,7 +93,7 @@ export default function InputBar({ setMessages }) {
                 return [
                   ...prev,
                   {
-                    role: "receiver",
+                    role: "chatbot",
                     message: content,
                   },
                 ];
@@ -102,9 +107,8 @@ export default function InputBar({ setMessages }) {
             //   }];
             // });
             console.log(error.message);
-          }
-          finally {
-            setStreaming(false)
+          } finally {
+            setStreaming(false);
           }
         }
       }
@@ -118,12 +122,17 @@ export default function InputBar({ setMessages }) {
 
   return (
     <div className="searchbar_wrapper">
-      <input
+      <button className="add-item-btn">
+        <AddItem className="add-btn"></AddItem>
+      </button>
+      <div
+        contentEditable="true"
         id="search-bar-input"
         className="search_input"
         type="text"
         placeholder="Ask me Anything!"
-      />
+        inputMode="text"
+      ></div>
       <button className="input-bar-btn" onClick={SendMessage}>
         <SendInput className="input_btn" />
       </button>

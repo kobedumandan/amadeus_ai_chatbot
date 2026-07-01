@@ -72,10 +72,10 @@
 .message_row {
   display: flex;
 }
-.message_row.sender {
+.message_row.user {
   justify-content: end;
 }
-.message_row.reciever {
+.message_row.chatbot {
   justify-content: start;
 }
 
@@ -88,11 +88,11 @@
   font-size: var(--fs-small);
   line-height: 1.95;
 }
-.sender .chat_messages {
+.user .chat_messages {
   background-color: var(--accent-bg);
   max-width: 500px;
 }
-.receiver .chat_messages {
+.chatbot .chat_messages {
   text-align: justify;
 }
 
