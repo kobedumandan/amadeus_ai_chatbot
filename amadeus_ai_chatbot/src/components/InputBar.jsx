@@ -1,11 +1,20 @@
 import "../styles/InputBar.css";
 import { SendInput } from "../assets/svg/svg.jsx";
+import { useState } from "react";
 
 export default function InputBar({ setMessages }) {
 
+  // streaming flag
+  const [isStreaming, setStreaming] = useState(false);
+
   async function SendMessage() {
+
+    console.log("pressed")
+
+    setStreaming(true);
+
     const msg = document.getElementById("search-bar-input");
-    const userMsg = msg.value;
+    const userMsg = msg.value.trim();
 
     setMessages((prev) => [
       ...prev,
@@ -32,7 +41,6 @@ export default function InputBar({ setMessages }) {
           },
         ],
         stream: true,
-        max_tokens: 512,
       }),
     });
 
@@ -94,6 +102,9 @@ export default function InputBar({ setMessages }) {
             //   }];
             // });
             console.log(error.message);
+          }
+          finally {
+            setStreaming(false)
           }
         }
       }
