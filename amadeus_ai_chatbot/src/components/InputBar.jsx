@@ -27,7 +27,7 @@ export default function InputBar({ messages, setMessages }) {
 
     let context = "CURRENT CONTEXT: ";
     for (const message of messages) {
-      context +=  `\n ${message.role}: ${message.message}`;
+      context += `\n ${message.role}: ${message.message}`;
     }
     console.log(context);
 
@@ -50,10 +50,17 @@ export default function InputBar({ messages, setMessages }) {
     });
 
     if (!resp.ok) {
-      throw new Error(`HTTP Error: ${resp.status}`);
+      // throw new Error(`HTTP Error: ${resp.status}`);
+      setMessages((prev) => {
+        return [
+          ...prev,
+          {
+            role: "error",
+            message: `HTTP Error: ${resp.status}`,
+          },
+        ];
+      });
     }
-
-    // const data = await resp.json();
 
     const reader = resp.body.getReader();
     const decoder = new TextDecoder("utf-8");
@@ -100,13 +107,15 @@ export default function InputBar({ messages, setMessages }) {
               });
             }
           } catch (error) {
-            // setMessages((prev) => {
-            //   return [...prev, {
-            //     role: "error",
-            //     message: error.message,
-            //   }];
-            // });
-            console.log(error.message);
+            setMessages((prev) => {
+              return [
+                ...prev,
+                {
+                  role: "error",
+                  message: error.message,
+                },
+              ];
+            });
           } finally {
             setStreaming(false);
           }
@@ -117,7 +126,7 @@ export default function InputBar({ messages, setMessages }) {
 
   function clearInputBar() {
     const msg = document.getElementById("search-bar-input");
-    msg.value = "";
+    msg.innerText = "";
   }
 
   return (
