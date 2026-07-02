@@ -1,10 +1,25 @@
 import "../styles/InputBar.css";
 import { SendInput, NewChat as AddItem } from "../assets/svg/svg.jsx";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export default function InputBar({ messages, setMessages }) {
+  const inputInitial = useRef();
+  const [expanded, setExpanded] = useState(false);
+
   // streaming flag
   const [isStreaming, setStreaming] = useState(false);
+
+  useLayoutEffect(() => {
+    const observer = new ResizeObserver(() => {
+      const input = inputInitial.current;
+
+      setExpanded(input.scrollHeight > 34);
+    });
+
+    observer.observe(inputInitial.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   async function SendMessage() {
     console.log("pressed");
@@ -130,21 +145,23 @@ export default function InputBar({ messages, setMessages }) {
   }
 
   return (
-    <div className="searchbar_wrapper">
-      <button className="add-item-btn">
-        <AddItem className="add-btn"></AddItem>
-      </button>
-      <div
-        contentEditable="true"
-        id="search-bar-input"
-        className="search_input"
-        type="text"
-        placeholder="Ask me Anything!"
-        inputMode="text"
-      ></div>
-      <button className="input-bar-btn" onClick={SendMessage}>
-        <SendInput className="input_btn" />
-      </button>
+    <div className={`searchbar_wrapper ${expanded ? "expanded" : ""}`}>
+      <div className="searchbar-input-wrapper">
+        <button className="add-item-btn">
+          <AddItem className="add-btn"></AddItem>
+        </button>
+        <div
+          ref={inputInitial}
+          contentEditable="true"
+          id="search-bar-input"
+          className="search_input"
+          type="text"
+          inputMode="text"
+        ></div>
+        <button className="input-bar-btn" onClick={SendMessage}>
+          <SendInput className="input_btn" />
+        </button>
+      </div>
     </div>
   );
 }
